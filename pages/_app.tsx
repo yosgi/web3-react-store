@@ -1,10 +1,10 @@
 import "styles/globals.css";
 
 import { ApolloProvider } from "@apollo/client";
-import { NextPage } from "next";
+// import { NextPage } from "next";
 import { AppProps } from "next/app";
 import NextNProgress from "nextjs-progressbar";
-import React, { ReactElement, ReactNode } from "react";
+import React, { ReactElement } from "react";
 
 import { DemoBanner } from "@/components/DemoBanner";
 import { RegionsProvider } from "@/components/RegionsProvider";
@@ -13,12 +13,12 @@ import { DEMO_MODE } from "@/lib/const";
 import apolloClient from "@/lib/graphql";
 import { CheckoutProvider } from "@/lib/providers/CheckoutProvider";
 
-type NextPageWithLayout = NextPage & {
-  getLayout?: (page: ReactElement) => ReactNode;
-};
+// type NextPageWithLayout = NextPage & {
+//   getLayout?: (page: ReactElement) => ReactNode;
+// };
 
 type AppPropsWithLayout = AppProps & {
-  Component: NextPageWithLayout;
+  Component: any;
 };
 
 function MyApp({ Component, pageProps }: AppPropsWithLayout) {

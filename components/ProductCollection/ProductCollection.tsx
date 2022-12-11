@@ -54,7 +54,6 @@ export function ProductCollection({
   const { loading, error, data, fetchMore } = useProductCollectionQuery({
     variables,
   });
-  console.log("data", data);
   useEffect(() => {
     if (setCounter) {
       setCounter(data?.products?.totalCount || 0);
