@@ -50,7 +50,10 @@
     "react-hook-form": "^7.29.0",
     "react-intl": "^5.24.6",
     "react-use": "^17.3.2",
-    "tailwind-scrollbar-hide": "^1.1.7"
+    "tailwind-scrollbar-hide": "^1.1.7",
+    "@usedapp/core": "^0.4.1",
+    "ethers": "^5.7.1",
+    "web3": "^1.7.1"
   },
   "devDependencies": {
     "@formatjs/cli": "^4.8.2",

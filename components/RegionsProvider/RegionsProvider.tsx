@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import React, {  useState } from "react";
+import React, { PropsWithChildren, useState } from "react";
 import { IntlProvider } from "react-intl";
 
 import apolloClient from "@/lib/graphql";
@@ -44,7 +44,7 @@ export interface RegionsProviderProps {
   children: React.ReactNode;
 }
 
-export function RegionsProvider({ children }: any) {
+export function RegionsProvider({ children }: PropsWithChildren<{}>) {
   const router = useRouter();
   const { resetCheckoutToken } = useCheckout();
 
@@ -82,7 +82,7 @@ export function RegionsProvider({ children }: any) {
   return (
     <Provider value={providerValues}>
       <IntlProvider messages={msgs} locale={locale} defaultLocale={DEFAULT_LOCALE}>
-        {children}
+        {children as any}
       </IntlProvider>
     </Provider>
   );

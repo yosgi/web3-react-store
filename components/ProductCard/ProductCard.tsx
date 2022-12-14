@@ -29,7 +29,6 @@ export function ProductCard({ product }: ProductCardProps) {
   const paths = usePaths();
   const secondaryDescription = getCardSecondaryDescription(product);
   const thumbnailUrl = product.media?.find((media) => media.type === "IMAGE")?.url;
-
   return (
     <li key={product.id} className="w-full">
       <Link href={paths.products._slug(product.slug).$url()} prefetch={false} passHref>
@@ -54,6 +53,9 @@ export function ProductCard({ product }: ProductCardProps) {
           {secondaryDescription && (
             <p className="block text-md font-normal text-main underline">{secondaryDescription}</p>
           )}
+          <p className="block text-md font-normal text-main ">
+            price:{product.pricing?.priceRange?.start?.gross?.amount}
+          </p>
         </a>
       </Link>
     </li>

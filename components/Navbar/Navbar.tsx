@@ -1,4 +1,4 @@
-import { useAuthState } from "@saleor/sdk";
+import { useEthers } from "@usedapp/core";
 import clsx from "clsx";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -13,15 +13,14 @@ import { Menu } from "./Menu";
 import styles from "./Navbar.module.css";
 import NavIconButton from "./NavIconButton";
 import Stamp from "./Stamp";
-import UserMenu from "./UserMenu";
 
 export function Navbar() {
   const paths = usePaths();
   const router = useRouter();
 
   const [isBurgerOpen, setBurgerOpen] = useState(false);
-  const { authenticated } = useAuthState();
   const { checkout } = useCheckout();
+  const { activateBrowserWallet, account } = useEthers();
 
   useEffect(() => {
     // Close side menu after changing the page
@@ -54,14 +53,18 @@ export function Navbar() {
             </Link>
           </div>
           <div className="flex-1 flex justify-end">
-            {!authenticated ? (
-              <Link href={paths.account.login.$url()} passHref>
-                <a href="pass">
-                  <NavIconButton icon="user" aria-hidden="true" />
-                </a>
-              </Link>
+            {!account ? (
+              <div>
+                <NavIconButton
+                  onClick={() => activateBrowserWallet()}
+                  icon="user"
+                  aria-hidden="true"
+                />
+              </div>
             ) : (
-              <UserMenu />
+              <div className="flex-1 flex justify-center items-center">
+                {`${account.slice(0, 6)}...${account.slice(account.length - 4, account.length)}`}
+              </div>
             )}
             <Link href={paths.cart.$url()} passHref>
               <a href="pass" className="ml-2 hidden xs:flex">
