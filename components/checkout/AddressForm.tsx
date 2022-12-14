@@ -56,7 +56,7 @@ export function AddressForm({
     }
 
     // Address updated, we can exit the edit mode
-    console.log("Pay!")
+    
   });
   return (
     <form onSubmit={onAddressFormSubmit}>
@@ -71,8 +71,7 @@ export function AddressForm({
               id="phone"
               className="w-full border-gray-300 rounded-md shadow-sm text-base"
               {...registerAddress("phone", {
-                required: true,
-                pattern: /^([+]?[\s0-9]+)?(\d{3}|[(]?[0-9]+[)])?([-]?[\s]?[0-9])+$/i,
+                required: true
               })}
             />
             {!!errorsAddress.phone && <p>{errorsAddress.phone.message}</p>}
