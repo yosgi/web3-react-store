@@ -5,9 +5,7 @@ import { CheckoutDetailsFragment } from "@/saleor/api";
 
 import { BillingAddressSection } from "./BillingAddressSection";
 import { EmailSection } from "./EmailSection";
-import { PaymentSection } from "./payments/PaymentSection";
-import { ShippingAddressSection } from "./ShippingAddressSection";
-import { ShippingMethodSection } from "./ShippingMethodSection";
+
 
 interface CollapsedSections {
   billingAddress: boolean;

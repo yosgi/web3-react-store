@@ -1,15 +1,11 @@
-import { useAuthState } from "@saleor/sdk";
-import React, { useState } from "react";
+import React from "react";
 import { useIntl } from "react-intl";
 
-import { SavedAddressSelectionList } from "@/components";
 import { notNullable } from "@/lib/util";
 import { CheckoutDetailsFragment, useCheckoutBillingAddressUpdateMutation } from "@/saleor/api";
 
-import { Button } from "../Button";
 import { useRegions } from "../RegionsProvider";
 import { messages } from "../translations";
-import { AddressDisplay } from "./AddressDisplay";
 import { AddressForm, AddressFormData } from "./AddressForm";
 
 export interface BillingAddressSection {
@@ -19,8 +15,6 @@ export interface BillingAddressSection {
 
 export function BillingAddressSection({ active, checkout }: BillingAddressSection) {
   const t = useIntl();
-  const { authenticated } = useAuthState();
-  const [editing, setEditing] = useState(!checkout.billingAddress);
   const [checkoutBillingAddressUpdate] = useCheckoutBillingAddressUpdateMutation({});
   
   const { query } = useRegions();
@@ -35,7 +29,6 @@ export function BillingAddressSection({ active, checkout }: BillingAddressSectio
         locale: query.locale,
       },
     });
-    setEditing(false);
     return data?.checkoutBillingAddressUpdate?.errors.filter(notNullable) || [];
   };
 
@@ -51,7 +44,6 @@ export function BillingAddressSection({ active, checkout }: BillingAddressSectio
       <div>
       <AddressForm
               existingAddressData={checkout.billingAddress || undefined}
-              toggleEdit={() => setEditing(false)}
               updateAddressMutation={updateMutation}
             />
       </div>

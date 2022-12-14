@@ -18,13 +18,11 @@ export interface AddressFormData {
 
 export interface AddressFormProps {
   existingAddressData?: AddressDetailsFragment;
-  toggleEdit: () => void;
   updateAddressMutation: (address: AddressFormData) => Promise<CheckoutError[]>;
 }
 
 export function AddressForm({
   existingAddressData,
-  toggleEdit,
   updateAddressMutation,
 }: AddressFormProps) {
   const t = useIntl();
@@ -55,11 +53,9 @@ export function AddressForm({
           message: e.message || "",
         })
       );
-      return;
     }
 
     // Address updated, we can exit the edit mode
-    toggleEdit();
   });
   return (
     <form onSubmit={onAddressFormSubmit}>
