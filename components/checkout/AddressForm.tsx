@@ -56,6 +56,7 @@ export function AddressForm({
     }
 
     // Address updated, we can exit the edit mode
+    console.log("Pay!")
   });
   return (
     <form onSubmit={onAddressFormSubmit}>
