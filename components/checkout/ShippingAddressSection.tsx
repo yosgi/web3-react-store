@@ -95,7 +95,6 @@ export function ShippingAddressSection({ active, checkout }: ShippingAddressSect
             </div>
             <AddressForm
               existingAddressData={checkout.shippingAddress || undefined}
-              toggleEdit={() => setEditing(false)}
               updateAddressMutation={updateMutation}
             />
           </>
