@@ -184,7 +184,7 @@ export function AddressForm({
 
         <div className="col-span-full">
           <button type="button" className="btn-checkout-section" onClick={onAddressFormSubmit}>
-            {t.formatMessage(messages.saveButton)}
+            {t.formatMessage(messages.paymentCardHeader)}
           </button>
         </div>
       </div>

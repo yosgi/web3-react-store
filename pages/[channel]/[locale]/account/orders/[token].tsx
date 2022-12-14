@@ -113,7 +113,7 @@ function OrderDetailsPage({ token }: InferGetStaticPropsType<typeof getStaticPro
 
         {!!order?.billingAddress && (
           <div className="col-span-2 mr-2 my-2 p-4 rounded shadow-xs bg-white border md:w-1/2 md:col-span-2 md:w-full">
-            <h2 className="font-semibold text-lg mb-2">Billing Address </h2>
+            <h2 className="font-semibold text-lg mb-2">Shipping Address </h2>
             <AddressDisplay address={order.billingAddress} />
           </div>
         )}
