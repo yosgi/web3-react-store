@@ -1,4 +1,5 @@
-import { useEthers } from "@usedapp/core";
+import "../../additional.d.ts";
+
 import clsx from "clsx";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -8,6 +9,7 @@ import { usePaths } from "@/lib/paths";
 import { useCheckout } from "@/lib/providers/CheckoutProvider";
 import { CheckoutLineDetailsFragment } from "@/saleor/api";
 
+import { UserContext } from "../../pages/_app";
 import { BurgerMenu } from "../BurgerMenu";
 import { Menu } from "./Menu";
 import styles from "./Navbar.module.css";
@@ -20,8 +22,9 @@ export function Navbar() {
 
   const [isBurgerOpen, setBurgerOpen] = useState(false);
   const { checkout } = useCheckout();
-  const { activateBrowserWallet, account } = useEthers();
-
+  const accont = React.useContext(UserContext);
+  const address = accont?.address;
+  const connect = accont?.connect;
   useEffect(() => {
     // Close side menu after changing the page
     router.events.on("routeChangeStart", () => {
@@ -53,17 +56,17 @@ export function Navbar() {
             </Link>
           </div>
           <div className="flex-1 flex justify-end">
-            {!account ? (
+            {!address ? (
               <div>
                 <NavIconButton
-                  onClick={() => activateBrowserWallet()}
+                  onClick={connect}
                   icon="user"
                   aria-hidden="true"
                 />
               </div>
             ) : (
               <div className="flex-1 flex justify-center items-center">
-                {`${account.slice(0, 6)}...${account.slice(account.length - 4, account.length)}`}
+                {`${address.slice(0, 6)}...${address.slice(address.length - 4, address.length)}`}
               </div>
             )}
             <Link href={paths.cart.$url()} passHref>

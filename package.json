@@ -33,10 +33,12 @@
     "@tailwindcss/aspect-ratio": "^0.4.0",
     "@tailwindcss/forms": "^0.5.0",
     "@tailwindcss/typography": "^0.5.2",
+    "@usedapp/core": "^0.4.1",
     "clsx": "1.1.1",
     "dotenv": "^16.0.0",
     "dotenv-cli": "^5.1.0",
     "editorjs-blocks-react-renderer": "^1.2.4",
+    "ethers": "^5.6.8",
     "graphql": "16.3.0",
     "graphql-tag": "^2.12.6",
     "next": "12.1.5",
@@ -50,9 +52,7 @@
     "react-intl": "^5.24.6",
     "react-use": "^17.3.2",
     "tailwind-scrollbar-hide": "^1.1.7",
-    "@usedapp/core": "^0.4.1",
-    "ethers": "^5.7.1",
-    "web3": "^1.7.1"
+    "web3": "^1.8.1"
   },
   "devDependencies": {
     "@formatjs/cli": "^4.8.2",

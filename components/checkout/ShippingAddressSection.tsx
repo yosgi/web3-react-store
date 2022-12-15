@@ -14,7 +14,7 @@ import { Button } from "../Button";
 import { useRegions } from "../RegionsProvider";
 import { messages } from "../translations";
 import { AddressDisplay } from "./AddressDisplay";
-import { AddressForm, AddressFormData } from "./AddressForm";
+import {  AddressFormData } from "./AddressForm";
 
 export interface ShippingAddressSectionProps {
   active: boolean;
@@ -93,10 +93,7 @@ export function ShippingAddressSection({ active, checkout }: ShippingAddressSect
                 {t.formatMessage(messages.sameAsBillingButton)}
               </button>
             </div>
-            <AddressForm
-              existingAddressData={checkout.shippingAddress || undefined}
-              updateAddressMutation={updateMutation}
-            />
+         
           </>
         ) : (
           <section className="flex justify-between items-center mb-4">

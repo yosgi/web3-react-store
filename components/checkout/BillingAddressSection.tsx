@@ -45,6 +45,7 @@ export function BillingAddressSection({ active, checkout }: BillingAddressSectio
       <AddressForm
               existingAddressData={checkout.billingAddress || undefined}
               updateAddressMutation={updateMutation}
+              checkout={checkout}
             />
       </div>
     </>

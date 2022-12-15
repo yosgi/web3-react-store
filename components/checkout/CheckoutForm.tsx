@@ -3,9 +3,8 @@ import React from "react";
 import { useCheckout } from "@/lib/providers/CheckoutProvider";
 import { CheckoutDetailsFragment } from "@/saleor/api";
 
-import { BillingAddressSection } from "./BillingAddressSection";
 import { EmailSection } from "./EmailSection";
-
+import { BillingAddressSection } from "./BillingAddressSection";
 
 interface CollapsedSections {
   billingAddress: boolean;
@@ -60,17 +59,16 @@ export function CheckoutForm() {
         <BillingAddressSection active={!collapsedSections.billingAddress} checkout={checkout} />
       </div>
 
-      {/* {checkout.isShippingRequired && (
-        <div className="checkout-section-container">
-          <ShippingAddressSection active={!collapsedSections.shippingAddress} checkout={checkout} />
-        </div>
-      )} */}
+
+      {/* <div className="checkout-section-container">
+        <ShippingAddressSection active={!collapsedSections.shippingAddress} checkout={checkout} />
+      </div> */}
       {/* {checkout.isShippingRequired && (
         <div className="checkout-section-container">
           <ShippingMethodSection active={!collapsedSections.shippingMethod} checkout={checkout} />
         </div>
-      )}
-      <div className="checkout-section-container">
+      )} */}
+      {/* <div className="checkout-section-container">
         <PaymentSection active={!collapsedSections.payment} checkout={checkout} />
       </div> */}
     </section>
