@@ -14,7 +14,7 @@ import { Button } from "../Button";
 import { useRegions } from "../RegionsProvider";
 import { messages } from "../translations";
 import { AddressDisplay } from "./AddressDisplay";
-import {  AddressFormData } from "./AddressForm";
+import { AddressForm, AddressFormData } from "./AddressForm";
 
 export interface ShippingAddressSectionProps {
   active: boolean;
@@ -58,10 +58,17 @@ export function ShippingAddressSection({ active, checkout }: ShippingAddressSect
     setEditing(false);
   };
   const updateMutation = async (formData: AddressFormData) => {
+    const nextData = {
+      ...formData,
+      postalCode:"53-601",
+    }
+    if (nextData.phone && nextData.phone.indexOf("+86") === -1) {
+      nextData.phone =`+86 ${formData.phone}` 
+    }
     const { data } = await shippingAddressUpdateMutation({
       variables: {
         address: {
-          ...formData,
+          ...nextData,
         },
         token: checkout.token,
         locale: query.locale,
@@ -93,7 +100,11 @@ export function ShippingAddressSection({ active, checkout }: ShippingAddressSect
                 {t.formatMessage(messages.sameAsBillingButton)}
               </button>
             </div>
-         
+            <AddressForm
+              existingAddressData={checkout.shippingAddress || undefined}
+              toggleEdit={() => setEditing(false)}
+              updateAddressMutation={updateMutation}
+            />
           </>
         ) : (
           <section className="flex justify-between items-center mb-4">

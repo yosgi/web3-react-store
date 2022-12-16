@@ -1,22 +1,11 @@
-
-import { ethers } from "ethers";
-import { useRouter } from "next/router";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { useIntl } from "react-intl";
 
-import { usePaths } from "@/lib/paths";
-import { useCheckout } from "@/lib/providers/CheckoutProvider";
 import { AddressDetailsFragment, CheckoutError, CountryCode } from "@/saleor/api";
-import {
-  CheckoutDetailsFragment,
-  useCheckoutCompleteMutation,
-  useCheckoutPaymentCreateMutation,
-  useCheckoutShippingMethodUpdateMutation,
-  useCheckoutBillingAddressUpdateMutation
-} from "@/saleor/api";
 
 import { messages } from "../translations";
+
 export interface AddressFormData {
   firstName: string;
   lastName: string;
@@ -29,18 +18,16 @@ export interface AddressFormData {
 
 export interface AddressFormProps {
   existingAddressData?: AddressDetailsFragment;
+  toggleEdit: () => void;
   updateAddressMutation: (address: AddressFormData) => Promise<CheckoutError[]>;
-  checkout: CheckoutDetailsFragment;
 }
 
 export function AddressForm({
   existingAddressData,
+  toggleEdit,
   updateAddressMutation,
-  checkout
 }: AddressFormProps) {
   const t = useIntl();
-  const paths = usePaths();
-  const router = useRouter();
   const {
     register: registerAddress,
     handleSubmit: handleSubmitAddress,
@@ -57,34 +44,9 @@ export function AddressForm({
       postalCode: existingAddressData?.postalCode || "",
     },
   });
-  const { resetCheckoutToken } = useCheckout();
-  const [checkoutPaymentCreateMutation] = useCheckoutPaymentCreateMutation();
-  const [checkoutCompleteMutation] = useCheckoutCompleteMutation();
-  const [checkoutShippingMethodUpdate] = useCheckoutShippingMethodUpdateMutation({});
-  const [checkoutBillingAddressUpdate] = useCheckoutBillingAddressUpdateMutation({});
-  const redirectToOrderDetailsPage = async () => {
-    resetCheckoutToken();
-    // without the `await` checkout data will be removed before the redirection which will cause issue with rendering checkout view
-    await router.push(paths.order.$url());
-  };
+
   const onAddressFormSubmit = handleSubmitAddress(async (formData: AddressFormData) => {
     const errors = await updateAddressMutation(formData);
-    await checkoutBillingAddressUpdate({
-      variables: {
-        address: {
-          ...formData,
-        },
-        token: checkout.token,
-        locale: "EN",
-      },
-    });
-    await checkoutShippingMethodUpdate({
-      variables: {
-        token: checkout.token,
-        shippingMethodId: "U2hpcHBpbmdNZXRob2Q6Mg==",
-        locale: "EN",
-      },
-    });
 
     // Assign errors to the form fields
     if (errors.length > 0) {
@@ -93,61 +55,11 @@ export function AddressForm({
           message: e.message || "",
         })
       );
-    }
-
-    const { errors: paymentCreateErrors } = await checkoutPaymentCreateMutation({
-      variables: {
-        checkoutToken: checkout.token,
-        paymentInput: {
-          gateway: "saleor.payments.stripe",
-          amount: checkout.totalPrice?.gross.amount,
-        },
-      },
-    });
-    await checkoutPaymentCreateMutation({
-      variables: {
-        checkoutToken: checkout.token,
-        paymentInput: {
-          gateway: "Token",
-          amount: checkout.totalPrice?.gross.amount
-        },
-      },
-    });
-
-
-    if (paymentCreateErrors) {
-      console.error(paymentCreateErrors);
       return;
     }
-    const provider = new ethers.providers.Web3Provider(window.ethereum, {
-      name: "MetaMask",
-      chainId: 513100,
-    });
-    const signer = provider.getSigner();
-    const recipient = "0x79Cf4A56E0eC0d0AeEC1307E84a2A116e7500C22";
-    // eslint-disable-next-line no-unsafe-optional-chaining
-    const amount = ethers.utils.parseEther(`${checkout.totalPrice?.gross.amount / 100  }`);
 
-    // Use the sendTransaction method to create and send the transaction
-    await signer.sendTransaction({
-      to: recipient,
-      value: amount
-    });
-    const { data: completeData, errors: completeErrors } = await checkoutCompleteMutation({
-      variables: {
-        checkoutToken: checkout.token,
-      },
-    });
-    if (completeErrors) {
-      console.error("complete errors:", completeErrors);
-      return;
-    }
-    const order = completeData?.checkoutComplete?.order;
-    if (order) {
-      redirectToOrderDetailsPage();
-    } else {
-      console.error("Order was not created");
-    }
+    // Address updated, we can exit the edit mode
+    toggleEdit();
   });
   return (
     <form onSubmit={onAddressFormSubmit}>
@@ -162,10 +74,11 @@ export function AddressForm({
               id="phone"
               className="w-full border-gray-300 rounded-md shadow-sm text-base"
               {...registerAddress("phone", {
-                required: false,
-                pattern: /^([-]?[\s]?[0-9])+$/i,
+                required: true,
+                pattern: /^([+]?[\s0-9]+)?(\d{3}|[(]?[0-9]+[)])?([-]?[\s]?[0-9])+$/i,
               })}
             />
+            {!!errorsAddress.phone && <p>{errorsAddress.phone.message}</p>}
           </div>
         </div>
 
@@ -250,7 +163,7 @@ export function AddressForm({
           />
         </div>
       </div> */}
-
+{/* 
         <div className="col-span-full sm:col-span-6">
           <label htmlFor="postal-code" className="block text-sm font-medium text-gray-700">
             {t.formatMessage(messages.postalCodeField)}
@@ -267,11 +180,11 @@ export function AddressForm({
             />
             {!!errorsAddress.postalCode && <p>{errorsAddress.postalCode.message}</p>}
           </div>
-        </div>
+        </div> */}
 
         <div className="col-span-full">
           <button type="button" className="btn-checkout-section" onClick={onAddressFormSubmit}>
-            {t.formatMessage(messages.paymentCardHeader)}
+            {t.formatMessage(messages.saveButton)}
           </button>
         </div>
       </div>

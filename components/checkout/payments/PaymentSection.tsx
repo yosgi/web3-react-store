@@ -28,7 +28,7 @@ export function PaymentSection({ checkout, active }: PaymentSectionProps) {
         <h2
           className={active ? "checkout-section-header-active" : "checkout-section-header-disabled"}
         >
-          {t.formatMessage(messages.paymentCardHeader)}
+          使用 hf 支付
         </h2>
       </div>
       {active && (
@@ -40,7 +40,7 @@ export function PaymentSection({ checkout, active }: PaymentSectionProps) {
             <RadioGroup value={chosenGateway} onChange={setChosenGateway} className="mt-2">
               {availableGateways.map((gateway) => (
                 <RadioGroup.Option key={gateway.id} value={gateway.id}>
-                  <label className="inline-flex items-center" htmlFor={gateway.id}>
+                  {/* <label className="inline-flex items-center" htmlFor={gateway.id}>
                     <input
                       type="radio"
                       className="form-radio"
@@ -49,7 +49,7 @@ export function PaymentSection({ checkout, active }: PaymentSectionProps) {
                       id={gateway.id}
                     />
                     <span className="ml-2 text-base">{gateway.name}</span>
-                  </label>
+                  </label> */}
                 </RadioGroup.Option>
               ))}
             </RadioGroup>

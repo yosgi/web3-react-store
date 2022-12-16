@@ -3,8 +3,11 @@ import React from "react";
 import { useCheckout } from "@/lib/providers/CheckoutProvider";
 import { CheckoutDetailsFragment } from "@/saleor/api";
 
-import { EmailSection } from "./EmailSection";
 import { BillingAddressSection } from "./BillingAddressSection";
+import { EmailSection } from "./EmailSection";
+import { PaymentSection } from "./payments/PaymentSection";
+import { ShippingAddressSection } from "./ShippingAddressSection";
+import { ShippingMethodSection } from "./ShippingMethodSection";
 
 interface CollapsedSections {
   billingAddress: boolean;
@@ -48,6 +51,7 @@ export function CheckoutForm() {
     return null;
   }
 
+
   const collapsedSections = sectionsManager(checkout);
 
   return (
@@ -59,18 +63,19 @@ export function CheckoutForm() {
         <BillingAddressSection active={!collapsedSections.billingAddress} checkout={checkout} />
       </div>
 
-
-      {/* <div className="checkout-section-container">
-        <ShippingAddressSection active={!collapsedSections.shippingAddress} checkout={checkout} />
-      </div> */}
-      {/* {checkout.isShippingRequired && (
+      {checkout.isShippingRequired && (
+        <div className="checkout-section-container">
+          <ShippingAddressSection active={!collapsedSections.shippingAddress} checkout={checkout} />
+        </div>
+      )}
+      {checkout.isShippingRequired && (
         <div className="checkout-section-container">
           <ShippingMethodSection active={!collapsedSections.shippingMethod} checkout={checkout} />
         </div>
-      )} */}
-      {/* <div className="checkout-section-container">
+      )}
+      <div className="checkout-section-container">
         <PaymentSection active={!collapsedSections.payment} checkout={checkout} />
-      </div> */}
+      </div>
     </section>
   );
 }

@@ -1,11 +1,15 @@
-import React from "react";
+import { useAuthState } from "@saleor/sdk";
+import React, { useState } from "react";
 import { useIntl } from "react-intl";
 
+import { SavedAddressSelectionList } from "@/components";
 import { notNullable } from "@/lib/util";
 import { CheckoutDetailsFragment, useCheckoutBillingAddressUpdateMutation } from "@/saleor/api";
 
+import { Button } from "../Button";
 import { useRegions } from "../RegionsProvider";
 import { messages } from "../translations";
+import { AddressDisplay } from "./AddressDisplay";
 import { AddressForm, AddressFormData } from "./AddressForm";
 
 export interface BillingAddressSection {
@@ -15,20 +19,30 @@ export interface BillingAddressSection {
 
 export function BillingAddressSection({ active, checkout }: BillingAddressSection) {
   const t = useIntl();
+  const { authenticated } = useAuthState();
+  const [editing, setEditing] = useState(!checkout.billingAddress);
   const [checkoutBillingAddressUpdate] = useCheckoutBillingAddressUpdateMutation({});
-  
   const { query } = useRegions();
-
+  
   const updateMutation = async (formData: AddressFormData) => {
+    const nextData = {
+      ...formData,
+      postalCode:"53-601",
+    }
+    if (nextData.phone && nextData.phone.indexOf("+86") === -1) {
+      nextData.phone =`+86 ${formData.phone}` 
+    }
+    
     const { data } = await checkoutBillingAddressUpdate({
       variables: {
         address: {
-          ...formData,
+          ...nextData
         },
         token: checkout.token,
         locale: query.locale,
       },
     });
+    setEditing(false);
     return data?.checkoutBillingAddressUpdate?.errors.filter(notNullable) || [];
   };
 
@@ -38,16 +52,31 @@ export function BillingAddressSection({ active, checkout }: BillingAddressSectio
         <h2
           className={active ? "checkout-section-header-active" : "checkout-section-header-disabled"}
         >
-          {t.formatMessage(messages.shippingAddressCardHeader)}
+          {t.formatMessage(messages.billingAddressCardHeader)}
         </h2>
       </div>
-      <div>
-      <AddressForm
+      {active &&
+        (editing ? (
+          <>
+            {authenticated && (
+              <SavedAddressSelectionList
+                updateAddressMutation={(address: AddressFormData) => updateMutation(address)}
+              />
+            )}
+            <AddressForm
               existingAddressData={checkout.billingAddress || undefined}
+              toggleEdit={() => setEditing(false)}
               updateAddressMutation={updateMutation}
-              checkout={checkout}
             />
-      </div>
+          </>
+        ) : (
+          <section className="flex justify-between items-center mb-4">
+            {!!checkout.billingAddress && <AddressDisplay address={checkout.billingAddress} />}
+            <Button onClick={() => setEditing(true)}>
+              {t.formatMessage(messages.changeButton)}
+            </Button>
+          </section>
+        ))}
     </>
   );
 }

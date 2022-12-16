@@ -13,7 +13,7 @@ export function AddressDisplay({ address }: AddressDisplayProps) {
         </p>
         <p>{address?.streetAddress1}</p>
         <p>
-          {address?.postalCode} {address?.city}, {address?.country.country}
+          {address?.city}
         </p>
       </address>
       <div>{address?.phone}</div>

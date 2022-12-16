@@ -11,6 +11,7 @@ import { LanguageCodeEnum, PriceFragment } from "@/saleor/api";
 
 import * as sourceOfTruth from "../../locale/en-US.json";
 import * as pl from "../../locale/pl-PL.json";
+import * as zh from "../../locale/zh-Hant.json";
 
 export interface RegionsConsumerProps {
   channels: Channel[];
@@ -36,7 +37,7 @@ export function importMessages(locale: string): LocaleMessages {
     case "pl-PL":
       return pl;
     default:
-      return sourceOfTruth;
+      return zh;
   }
 }
 
@@ -57,7 +58,6 @@ export function RegionsProvider({ children }: PropsWithChildren<{}>) {
   };
 
   const locale = router.query.locale?.toString() || DEFAULT_LOCALE;
-
   const currentChannel =
     CHANNELS.find(({ slug }) => slug === currentChannelSlug) || DEFAULT_CHANNEL;
 

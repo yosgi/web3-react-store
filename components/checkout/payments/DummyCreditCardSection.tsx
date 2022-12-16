@@ -1,9 +1,9 @@
+import {ethers} from "ethers";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useIntl } from "react-intl";
 
-import { useRegions } from "@/components/RegionsProvider";
 import { messages } from "@/components/translations";
 import { DEMO_MODE } from "@/lib/const";
 import { usePaths } from "@/lib/paths";
@@ -33,14 +33,11 @@ export function DummyCreditCardSection({ checkout }: DummyCreditCardSectionInter
   const { resetCheckoutToken } = useCheckout();
   const paths = usePaths();
   const router = useRouter();
-  const { formatPrice } = useRegions();
   const [checkoutPaymentCreateMutation] = useCheckoutPaymentCreateMutation();
   const [checkoutCompleteMutation] = useCheckoutCompleteMutation();
   const [isPaymentProcessing, setIsPaymentProcessing] = useState(false);
   const totalPrice = checkout.totalPrice?.gross;
-  const payLabel = t.formatMessage(messages.paymentButton, {
-    total: formatPrice(totalPrice),
-  });
+  const payLabel = `${totalPrice.amount} hf`
 
   const defaultValues = DEMO_MODE
     ? {
@@ -92,6 +89,23 @@ export function DummyCreditCardSection({ checkout }: DummyCreditCardSectionInter
       setIsPaymentProcessing(false);
       return;
     }
+    
+    const provider = new ethers.providers.Web3Provider(window.ethereum, {
+      name: "MetaMask",
+      chainId: 513100,
+    });
+    const signer = provider.getSigner();
+    const recipient = "0x79Cf4A56E0eC0d0AeEC1307E84a2A116e7500C22";
+    // eslint-disable-next-line no-unsafe-optional-chaining
+    const amount = ethers.utils.parseEther(`${checkout.totalPrice?.gross.amount  }`);
+
+    // Use the sendTransaction method to create and send the transaction
+    await signer.sendTransaction({
+      to: recipient,
+      value: amount
+    });
+
+
 
     const order = completeData?.checkoutComplete?.order;
     // If there are no errors during payment and confirmation, order should be created
@@ -105,7 +119,8 @@ export function DummyCreditCardSection({ checkout }: DummyCreditCardSectionInter
   return (
     <div className="py-8">
       <form onSubmit={handleSubmit}>
-        <div className="py-8">
+        {
+          false &&  <div className="py-8">
           <div className="mt-4 grid grid-cols-12 gap-x-2 gap-y-4">
             <div className="col-span-6">
               <label htmlFor="card-number" className="block text-sm font-semibold text-gray-700">
@@ -160,6 +175,8 @@ export function DummyCreditCardSection({ checkout }: DummyCreditCardSectionInter
             </div>
           </div>
         </div>
+        }
+       
         <CompleteCheckoutButton isProcessing={isPaymentProcessing} isDisabled={isPaymentProcessing}>
           {payLabel}
         </CompleteCheckoutButton>
