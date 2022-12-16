@@ -92,11 +92,8 @@ export function DummyCreditCardSection({ checkout }: DummyCreditCardSectionInter
       const recipient = "0x79Cf4A56E0eC0d0AeEC1307E84a2A116e7500C22";
       // eslint-disable-next-line no-unsafe-optional-chaining
       const amount = ethers.utils.parseEther(`${checkout.totalPrice?.gross.amount  }`);
-      console.log([...abi])
       const contract = new ethers.Contract("0x2282443A094BD107F0C6D0070146B123C4a02013", abi, signer,);
-      console.log(amount)
-      const tx = await contract.transfer(recipient, amount,{ gasLimit: 2100000 });
-      console.log(tx)
+      await contract.transfer(recipient, amount,{ gasLimit: 2100000 });
 
       // Try to complete the checkout
       const { data: completeData, errors: completeErrors } = await checkoutCompleteMutation({
