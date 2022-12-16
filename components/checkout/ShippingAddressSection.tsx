@@ -74,6 +74,9 @@ export function ShippingAddressSection({ active, checkout }: ShippingAddressSect
         locale: query.locale,
       },
     });
+    if (data?.checkoutShippingAddressUpdate?.errors && data?.checkoutShippingAddressUpdate?.errors.length > 0) {
+      return data?.checkoutShippingAddressUpdate?.errors.filter(notNullable) || [];
+    }
     setEditing(false);
     return data?.checkoutShippingAddressUpdate?.errors.filter(notNullable) || [];
   };

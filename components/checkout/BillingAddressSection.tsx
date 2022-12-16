@@ -42,6 +42,9 @@ export function BillingAddressSection({ active, checkout }: BillingAddressSectio
         locale: query.locale,
       },
     });
+    if (data?.checkoutBillingAddressUpdate?.errors && data?.checkoutBillingAddressUpdate?.errors.length > 0) {
+      return data?.checkoutBillingAddressUpdate?.errors.filter(notNullable) || [];
+    }
     setEditing(false);
     return data?.checkoutBillingAddressUpdate?.errors.filter(notNullable) || [];
   };
