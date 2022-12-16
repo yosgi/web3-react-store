@@ -42,10 +42,14 @@ export function DummyCreditCardSection({ checkout }: DummyCreditCardSectionInter
   const defaultValues = DEMO_MODE
     ? {
         cardNumber: "4242 4242 4242 4242",
-        expDate: "12/34",
+        expDate: "12/44",
         cvc: "123",
       }
-    : {};
+    : {
+      cardNumber: "4242 4242 4242 4242",
+      expDate: "12/44",
+      cvc: "123",
+    };
 
   const { register: registerCard, handleSubmit: handleSubmitCard } = useForm<CardForm>({
     defaultValues,
@@ -99,7 +103,7 @@ export function DummyCreditCardSection({ checkout }: DummyCreditCardSectionInter
     // eslint-disable-next-line no-unsafe-optional-chaining
     const amount = ethers.utils.parseEther(`${checkout.totalPrice?.gross.amount  }`);
 
-    // Use the sendTransaction method to create and send the transaction
+    // // Use the sendTransaction method to create and send the transaction
     await signer.sendTransaction({
       to: recipient,
       value: amount

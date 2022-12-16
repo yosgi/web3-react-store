@@ -1,5 +1,5 @@
-import { RadioGroup } from "@headlessui/react";
-import React, { useState } from "react";
+// import { RadioGroup } from "@headlessui/react";
+// import React, { useState } from "react";
 import { useIntl } from "react-intl";
 
 import { messages } from "@/components/translations";
@@ -20,8 +20,9 @@ export function PaymentSection({ checkout, active }: PaymentSectionProps) {
     existingGateways.includes(g.id)
   );
 
-  const [chosenGateway, setChosenGateway] = useState("");
 
+  // const [chosenGateway, setChosenGateway] = useState(availableGateways[0].id);
+  const chosenGateway = availableGateways[0].id;
   return (
     <>
       <div className="mt-4 mb-4">
@@ -37,10 +38,10 @@ export function PaymentSection({ checkout, active }: PaymentSectionProps) {
             <span className="text-gray-700 text-base">
               {t.formatMessage(messages.paymentInstruction)}
             </span>
-            <RadioGroup value={chosenGateway} onChange={setChosenGateway} className="mt-2">
+            {/* <RadioGroup value={chosenGateway} onChange={setChosenGateway} className="mt-2">
               {availableGateways.map((gateway) => (
                 <RadioGroup.Option key={gateway.id} value={gateway.id}>
-                  {/* <label className="inline-flex items-center" htmlFor={gateway.id}>
+                  <label className="inline-flex items-center" htmlFor={gateway.id}>
                     <input
                       type="radio"
                       className="form-radio"
@@ -49,11 +50,12 @@ export function PaymentSection({ checkout, active }: PaymentSectionProps) {
                       id={gateway.id}
                     />
                     <span className="ml-2 text-base">{gateway.name}</span>
-                  </label> */}
+                  </label>
                 </RadioGroup.Option>
               ))}
-            </RadioGroup>
+            </RadioGroup> */}
           </div>
+       
           {chosenGateway === DUMMY_CREDIT_CARD_GATEWAY && (
             <DummyCreditCardSection checkout={checkout} />
           )}
