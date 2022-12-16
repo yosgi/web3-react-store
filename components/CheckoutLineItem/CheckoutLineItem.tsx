@@ -24,7 +24,7 @@ interface CheckoutLineItemProps {
 export function CheckoutLineItem({ line }: CheckoutLineItemProps) {
   const paths = usePaths();
   const t = useIntl();
-  const { query, formatPrice } = useRegions();
+  const { query } = useRegions();
   const { checkoutToken: token } = useCheckout();
   const [checkoutLineUpdateMutation, { loading: loadingLineUpdate }] =
     useCheckoutLineUpdateMutation();
@@ -150,9 +150,9 @@ export function CheckoutLineItem({ line }: CheckoutLineItemProps) {
                 disabled={loadingLineUpdate}
                 pattern="[0-9]*"
               />
-              <p className="text-md md:text-xl text-gray-900 text-right">
+              {/* <p className="text-md md:text-xl text-gray-900 text-right">
                 {formatPrice(line?.totalPrice?.gross)}
-              </p>
+              </p> */}
             </div>
           </div>
         </div>

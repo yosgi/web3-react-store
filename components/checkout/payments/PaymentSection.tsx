@@ -29,7 +29,7 @@ export function PaymentSection({ checkout, active }: PaymentSectionProps) {
         <h2
           className={active ? "checkout-section-header-active" : "checkout-section-header-disabled"}
         >
-          使用 hf 支付
+          {t.formatMessage(messages.paymentCardHeader)}
         </h2>
       </div>
       {active && (

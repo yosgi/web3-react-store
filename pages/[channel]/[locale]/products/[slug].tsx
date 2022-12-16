@@ -61,7 +61,7 @@ function ProductPage({ product }: InferGetStaticPropsType<typeof getStaticProps>
   const router = useRouter();
   const paths = usePaths();
   const t = useIntl();
-  const { currentChannel, formatPrice, query } = useRegions();
+  const { currentChannel, query } = useRegions();
 
   const { checkoutToken, setCheckoutToken, checkout } = useCheckout();
 
@@ -172,7 +172,7 @@ function ProductPage({ product }: InferGetStaticPropsType<typeof getStaticProps>
             </h1>
             {shouldDisplayPrice && (
               <h2 className="text-xl font-bold tracking-tight text-gray-800">
-                {formatPrice(price)}
+                {price.amount}HF
               </h2>
             )}
             {!!product.category?.slug && (

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { useForm } from "react-hook-form";
 import { useIntl } from "react-intl";
 
@@ -17,18 +17,18 @@ export interface CartSummaryProps {
 
 export function CartSummary({ checkout }: CartSummaryProps) {
   const t = useIntl();
-  const [editPromoCode] = useState(false);
+  // const [editPromoCode] = useState(false);
   const [checkoutAddPromoCodeMutation] = useCheckoutAddPromoCodeMutation();
-  const { subtotalPrice, shippingPrice, totalPrice, discount } = checkout;
+  const {  totalPrice } = checkout;
   const {
-    register: registerForm,
+    // register: registerForm,
     handleSubmit: handleSubmitForm,
-    formState: { errors: errorsForm },
+    // formState: { errors: errorsForm },
     setError: setErrorForm,
   } = useForm<PromoCodeFormData>({});
   const { query, formatPrice } = useRegions();
 
-  const onAddPromoCode = handleSubmitForm(async (formData: PromoCodeFormData) => {
+  handleSubmitForm(async (formData: PromoCodeFormData) => {
     const { data: promoMutationData } = await checkoutAddPromoCodeMutation({
       variables: {
         promoCode: formData.promoCode,
@@ -44,7 +44,7 @@ export function CartSummary({ checkout }: CartSummaryProps) {
   return (
     <section>
       <div className="bg-gray-50 rounded p-8 border">
-        {(editPromoCode || !discount?.amount) && (
+        {/* {(editPromoCode || !discount?.amount) && (
           <form className="pb-4" onSubmit={onAddPromoCode}>
             <label htmlFor="discount-code" className="block text-sm font-medium text-gray-700">
               {t.formatMessage(messages.discountCodeFieldLabel)}
@@ -69,10 +69,10 @@ export function CartSummary({ checkout }: CartSummaryProps) {
               <p className="text-sm text-red-500 pt-2">{errorsForm.promoCode?.message}</p>
             )}
           </form>
-        )}
+        )} */}
         <div className="flow-root">
           <dl className="text-sm">
-            {!!discount?.amount && (
+            {/* {!!discount?.amount && (
               <div className="py-2 flex items-center justify-between">
                 <dt className="text-gray-600">{t.formatMessage(messages.discount)}</dt>
                 <dd className="font-medium text-gray-900">{formatPrice(discount)}</dd>
@@ -89,10 +89,10 @@ export function CartSummary({ checkout }: CartSummaryProps) {
             <div className="py-2 flex items-center justify-between">
               <dt className="text-gray-600">{t.formatMessage(messages.tax)}</dt>
               <dd className="font-medium text-gray-900">{formatPrice(subtotalPrice?.tax)}</dd>
-            </div>
+            </div> */}
             <div className="pt-4 flex items-center justify-between border-t border-gray-300">
               <dt className="text-lg font-bold text-gray-900">{t.formatMessage(messages.total)}</dt>
-              <dd className="text-lg font-bold text-gray-900">{formatPrice(totalPrice?.gross)}</dd>
+              <dd className="text-lg font-bold text-gray-900">{totalPrice?.gross.amount}HF</dd>
             </div>
           </dl>
         </div>
