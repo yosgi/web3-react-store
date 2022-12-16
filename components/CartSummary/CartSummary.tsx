@@ -26,7 +26,7 @@ export function CartSummary({ checkout }: CartSummaryProps) {
     // formState: { errors: errorsForm },
     setError: setErrorForm,
   } = useForm<PromoCodeFormData>({});
-  const { query, formatPrice } = useRegions();
+  const { query } = useRegions();
 
   handleSubmitForm(async (formData: PromoCodeFormData) => {
     const { data: promoMutationData } = await checkoutAddPromoCodeMutation({
