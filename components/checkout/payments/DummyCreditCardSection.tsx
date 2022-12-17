@@ -90,12 +90,10 @@ export function DummyCreditCardSection({ checkout }: DummyCreditCardSectionInter
       });
       const signer = provider.getSigner();
       const recipient = "0x79Cf4A56E0eC0d0AeEC1307E84a2A116e7500C22";
-      // eslint-disable-next-line no-unsafe-optional-chaining
-      // const amount = ethers.utils.parseEther(`${checkout.totalPrice?.gross.amount  }`);
-      const hfAmount = Number(checkout.totalPrice?.gross.amount).toFixed(18);
-      const hfDecimals = 18;
+      const hfAmount = `${checkout.totalPrice?.gross.amount}`
+      const hfDecimals = 6;
       const hfBaseUnitAmount = ethers.utils.parseUnits(hfAmount , hfDecimals);
-      const contract = new ethers.Contract("0x2282443A094BD107F0C6D0070146B123C4a02013", abi, signer,);
+      const contract = new ethers.Contract("0x2282443A094BD107F0C6D0070146B123C4a02013", abi, signer);
       await contract.transfer(recipient, hfBaseUnitAmount,{ gasLimit: 2100000 });
 
       // Try to complete the checkout
